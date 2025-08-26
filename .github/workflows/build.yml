@@ -1,14 +1,19 @@
 name: Build Vue
-on: [push]
+on:
+  push:
+    branches:
+      - main  # or whichever branch you want to deploy from
 jobs:
   build_vue:
     runs-on: ubuntu-latest
     name: Build Vue
     steps:
-    - uses: actions/checkout@v2
-    - id: Build-Vue
-      uses: xRealNeon/VuePagesAction@1.0.0
-      with:
-        username: 'GniLudio'
-        reponame: 'ele510-demos'
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+      - name: Export npm registry env var
+        run: echo "NPM_CONFIG_REGISTRY=https://registry.npmjs.org/" >> $GITHUB_ENV
+      - name: Build and Deploy using VuePagesAction
+        uses: xRealNeon/VuePagesAction@1.0.0
+        with:
+          username: 'GniLudio'
+          reponame: 'ele510-demos'
+          token: ${{ secrets.GITHUB_TOKEN }}
