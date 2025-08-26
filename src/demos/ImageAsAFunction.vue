@@ -22,8 +22,8 @@
 			</tbody>
 		</v-table>
 		<v-label class="text-h5">Image</v-label>
-		<v-container>
-			<canvas id="canvas" class="w-50 border border-lg"></canvas>
+		<v-container class="fill-height">
+			<canvas id="canvas" class="border border-lg"></canvas>
 		</v-container>
 	</v-container>
 
