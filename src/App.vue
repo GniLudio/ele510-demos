@@ -21,19 +21,8 @@
 </template>
 
 <script setup lang="ts">
-	import { onMounted, ref } from 'vue'
+	import { ref } from 'vue'
 	import ImageAsAFunction from './demos/ImageAsAFunction.vue';
 
 	const tab = ref(1);
-	/*
-	const canvas = ref<HTMLCanvasElement | null>(null);
-	onMounted(() => {
-		const resizeCanvas = () => {
-			canvas.value!.width = window.innerWidth;
-			canvas.value!.height = window.innerHeight;
-		}
-		resizeCanvas()
-		window.addEventListener('resize', resizeCanvas)
-	});
-	*/
 </script>
