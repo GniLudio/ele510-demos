@@ -15,7 +15,7 @@
 			</v-col>
 		</v-row>
 		<v-label class="text-h5">Matrix</v-label>
-		<v-table>
+		<v-table class="mb-5">
 			<tbody>
 				<tr v-for="(row, y) in matrix" :key="y">
 					<td v-for="(cell, x) in row" :key="x" class="border py-2 overflow-hidden">
@@ -34,10 +34,8 @@
 				</tr>
 			</tbody>
 		</v-table>
-		<v-label class="text-h5">Image</v-label>
-		<v-container>
-			<canvas id="canvas" class="w-50 border border-lg"></canvas>
-		</v-container>
+		<v-label class="text-h5">Image</v-label><br />
+		<canvas id="canvas" class="w-50 border border-lg"></canvas>
 	</v-container>
 
 </template>

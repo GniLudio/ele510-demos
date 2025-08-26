@@ -1,20 +1,17 @@
 <template>
 	<v-app>
 		<v-main class="d-flex flex-column">
-			<v-tabs v-model="tab" align-tabs="center">
-				<v-tab value="1">Image as a Function</v-tab>
+			<v-tabs v-model="tab" align-tabs="center" color="primary">
+				<v-tab :value="1">Image as a Function</v-tab>
+				<v-tab :value="2">Geometric Transformations</v-tab>
 			</v-tabs>
-			<v-container class="fill-height">
-				<v-card class="fill-height flex-grow-1 d-flex">
-					<v-tabs-window class="w-100 fill-height" v-model="tab">
-						<v-tabs-window-item value="1" class="fill-height">
-							<ImageAsAFunction></ImageAsAFunction>
-						</v-tabs-window-item>
-					</v-tabs-window>
-				</v-card>
-
+			<v-container fluid>
+				<v-tabs-window v-model="tab">
+					<v-tabs-window-item :value="1">
+						<ImageAsAFunction />
+					</v-tabs-window-item>
+				</v-tabs-window>
 			</v-container>
-
 
 		</v-main>
 	</v-app>
