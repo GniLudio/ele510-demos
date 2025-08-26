@@ -137,14 +137,3 @@
 	});
 
 </script>
-<style lang="css" scoped>
-
-	:deep(.v-field__input) {
-		text-align: center
-	}
-
-	:deep(.v-field__field) {
-		justify-content: center;
-	}
-
-</style>
