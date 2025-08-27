@@ -24,7 +24,7 @@
 </template>
 <script setup lang="ts">
 	import bookCover from "@/assets/BookCover.jpg";
-	import { evaluate } from "mathjs";
+	import { parse } from "mathjs";
 	import { onMounted, ref, watch } from "vue";
 
 	const canvas = ref<HTMLCanvasElement | null>();
@@ -72,20 +72,25 @@
 		} else {
 			// calculate transformed coordinates
 			let transformedCoordinates: [x: number, y: number][][];
-			let transformedWidth = 0;
-			let transformedHeight = 0;
+			let [transformedWidth, transformedHeight] = [0, 0];
+			const equationXParsed = parse(equationX.value);
+			const equationYParsed = parse(equationY.value);
 			try {
+				const scope = { x: 0, y: 0, width: image.width, height: image.height };
 				transformedCoordinates = Array.from(
-					{ length: image.height }, (_, y) => Array.from(
-						{ length: image.width }, (_, x) => {
-							const scope = { x: x, y: y, width: image.width, height: image.height };
-							const transformedX = evaluate(equationX.value, scope);
-							const transformedY = evaluate(equationY.value, scope);
-							transformedWidth = Math.max(transformedX, transformedWidth);
-							transformedHeight = Math.max(transformedY, transformedHeight);
-							return [transformedX, transformedY];
-						}
-					)
+					{ length: image.height }, (_, y) => {
+						scope.y = y;
+						return Array.from(
+							{ length: image.width }, (_, x) => {
+								scope.x = x;
+								const transformedX: number = equationXParsed.evaluate(scope);
+								const transformedY: number = equationYParsed.evaluate(scope);
+								transformedWidth = Math.max(transformedX, transformedWidth);
+								transformedHeight = Math.max(transformedY, transformedHeight);
+								return [transformedX, transformedY];
+							}
+						);
+					},
 				);
 			} catch (Exception) {
 				context.fillStyle = "red";
