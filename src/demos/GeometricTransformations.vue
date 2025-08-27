@@ -4,12 +4,12 @@
 			<v-col cols="3">
 				<v-tooltip text="Available Variables: x, y, width, height" location="top">
 					<template v-slot:activator="{ props }">
-						<v-text-field label="x`" v-bind="props" hide-details v-model="forwardX" />
+						<v-text-field label="x`" v-bind="props" hide-details v-model="equationX" />
 					</template>
 				</v-tooltip>
 				<v-tooltip text="Available Variables: x, y, width, height" location="bottom">
 					<template v-slot:activator="{ props }">
-						<v-text-field label="y`" v-bind="props" hide-details v-model="forwardY" />
+						<v-text-field label="y`" v-bind="props" hide-details v-model="equationY" />
 					</template>
 				</v-tooltip>
 			</v-col>
@@ -31,11 +31,11 @@
 
 	const applyTransformation = ref(false);
 
-	const forwardX = ref("height-1-y");
-	const forwardY = ref("x");
+	const equationX = ref("height-1-y");
+	const equationY = ref("x");
 	const imagePath = ref(bookCover);
 
-	watch([forwardX, forwardY], () => {
+	watch([equationX, equationY], () => {
 		applyTransformation.value = false;
 	})
 
@@ -79,8 +79,8 @@
 					{ length: image.height }, (_, y) => Array.from(
 						{ length: image.width }, (_, x) => {
 							const scope = { x: x, y: y, width: image.width, height: image.height };
-							const transformedX = evaluate(forwardX.value, scope);
-							const transformedY = evaluate(forwardY.value, scope);
+							const transformedX = evaluate(equationX.value, scope);
+							const transformedY = evaluate(equationY.value, scope);
 							transformedWidth = Math.max(transformedX, transformedWidth);
 							transformedHeight = Math.max(transformedY, transformedHeight);
 							return [transformedX, transformedY];
