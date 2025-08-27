@@ -84,12 +84,11 @@
 	});
 
 	watch([matrix, coloredMatrix, colored], () => {
-		const canvas = document.getElementById("canvas") as HTMLCanvasElement | null;
+		const canvas = document.querySelector("canvas");
 		if (!canvas) return;
 
 		const context = canvas.getContext("2d");
 		if (!context) return;
-
 
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		if (width.value == 0 || height.value == 0) return;
