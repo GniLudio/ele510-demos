@@ -45,7 +45,7 @@
 		updateImage();
 	});
 
-	function updateImage(): void {
+	async function updateImage(): Promise<void> {
 		if (!canvas.value) return;
 
 		const context = canvas.value.getContext("2d");
@@ -57,18 +57,7 @@
 		image.src = imagePath.value;
 
 		if (!applyTransformation.value) {
-			if (!image.loading) {
-				drawImage();
-			} else {
-				image.onload = drawImage;
-			}
-
-			function drawImage(): void {
-				if (!canvas.value || !context) return;
-				canvas.value.width = image.width;
-				canvas.value.height = image.height;
-				context.drawImage(image, 0, 0);
-			}
+			await drawImage();
 		} else {
 			// get image data
 			const offscreenCanvas = new OffscreenCanvas(image.width, image.height);
@@ -127,9 +116,22 @@
 					context.fillRect(transformedX, transformedY, 1, 1);
 				}
 			}
+		}
 
+
+		async function drawImage(): Promise<void> {
+			if (!canvas.value || !context || !image) return;
+			if (image.loading) {
+				await new Promise<void>((resolve) => {
+					image.onload = () => resolve();
+				});
+			}
+			canvas.value.width = image.width;
+			canvas.value.height = image.height;
+			context.drawImage(image, 0, 0);
 		}
 	}
+
 
 
 
