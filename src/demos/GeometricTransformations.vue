@@ -70,34 +70,6 @@
 				context.drawImage(image, 0, 0);
 			}
 		} else {
-			// calculate transformed coordinates
-			let transformedCoordinates: [x: number, y: number][][];
-			let [transformedWidth, transformedHeight] = [0, 0];
-			const equationXParsed = parse(equationX.value);
-			const equationYParsed = parse(equationY.value);
-			try {
-				const scope = { x: 0, y: 0, width: image.width, height: image.height };
-				transformedCoordinates = Array.from(
-					{ length: image.height }, (_, y) => {
-						scope.y = y;
-						return Array.from(
-							{ length: image.width }, (_, x) => {
-								scope.x = x;
-								const transformedX: number = equationXParsed.evaluate(scope);
-								const transformedY: number = equationYParsed.evaluate(scope);
-								transformedWidth = Math.max(transformedX, transformedWidth);
-								transformedHeight = Math.max(transformedY, transformedHeight);
-								return [transformedX, transformedY];
-							}
-						);
-					},
-				);
-			} catch (Exception) {
-				context.fillStyle = "red";
-				context.fillRect(0, 0, transformedWidth, transformedHeight);
-				return;
-			}
-
 			// get image data
 			const offscreenCanvas = new OffscreenCanvas(image.width, image.height);
 			offscreenCanvas.width = image.width;
@@ -106,6 +78,32 @@
 			if (!offscreenContext) return;
 			offscreenContext.drawImage(image, 0, 0);
 			const imageData = offscreenContext.getImageData(0, 0, image.width, image.height);
+
+			// calculate transformed coordinates
+			const transformedCoordinates: [x: number, y: number][][] = [];
+			let [transformedWidth, transformedHeight] = [0, 0];
+			const equationXParsed = parse(equationX.value).compile();
+			const equationYParsed = parse(equationY.value).compile();
+
+			try {
+				const scope = { x: 0, y: 0, width: image.width, height: image.height };
+				for (let y = 0; y < image.height; y++) {
+					scope.y = y;
+					transformedCoordinates.push([]);
+					for (let x = 0; x < image.width; x++) {
+						scope.x = x;
+						const transformedX: number = equationXParsed.evaluate(scope);
+						const transformedY: number = equationYParsed.evaluate(scope);
+						transformedWidth = Math.max(transformedX, transformedWidth);
+						transformedHeight = Math.max(transformedY, transformedHeight);
+						transformedCoordinates[y].push([transformedX, transformedY]);
+					}
+				}
+			} catch (Exception) {
+				context.fillStyle = "red";
+				context.fillRect(0, 0, transformedWidth, transformedHeight);
+				return;
+			}
 
 			// draw
 			canvas.value.width = transformedWidth;
