@@ -4,6 +4,7 @@
 			<v-tabs v-model="tab" align-tabs="center" color="primary">
 				<v-tab value="image_as_a_function">Image as a Function</v-tab>
 				<v-tab value="geometric_transformations">Geometric Transformations</v-tab>
+				<v-tab value="point_transformations">Point Transformations</v-tab>
 			</v-tabs>
 			<v-container fluid>
 				<v-tabs-window v-model="tab">
@@ -12,6 +13,9 @@
 					</v-tabs-window-item>
 					<v-tabs-window-item value="geometric_transformations">
 						<GeometricTransformations />
+					</v-tabs-window-item>
+					<v-tabs-window-item value="point_transformations">
+						<PointTransformations />
 					</v-tabs-window-item>
 				</v-tabs-window>
 			</v-container>
@@ -24,8 +28,9 @@
 	import { ref } from 'vue'
 	import ImageAsAFunction from './demos/ImageAsAFunction.vue';
 	import GeometricTransformations from './demos/GeometricTransformations.vue';
+	import PointTransformations from './demos/PointTransformations.vue';
 
-	const tab = ref("geometric_transformations");
+	const tab = ref("point_transformations");
 </script>
 
 <style lang="css">

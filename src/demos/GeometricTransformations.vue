@@ -83,7 +83,7 @@
 						transformedCoordinates[y].push([transformedX, transformedY]);
 					}
 				}
-			} catch (Exception) {
+			} catch {
 				context.fillStyle = "red";
 				context.fillRect(0, 0, transformedWidth, transformedHeight);
 				return;
