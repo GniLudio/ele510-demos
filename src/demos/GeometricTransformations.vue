@@ -66,8 +66,8 @@
 			// calculate transformed coordinates
 			const transformedCoordinates: [x: number, y: number][][] = [];
 			let [transformedWidth, transformedHeight] = [0, 0];
-			const equationXParsed = parse(equationX.value).compile();
-			const equationYParsed = parse(equationY.value).compile();
+			const evaluateX = parse(equationX.value).compile().evaluate;
+			const evaluateY = parse(equationY.value).compile().evaluate;
 
 			try {
 				const scope = { x: 0, y: 0, width: image.width, height: image.height };
@@ -76,8 +76,8 @@
 					transformedCoordinates.push([]);
 					for (let x = 0; x < image.width; x++) {
 						scope.x = x;
-						const transformedX: number = equationXParsed.evaluate(scope);
-						const transformedY: number = equationYParsed.evaluate(scope);
+						const transformedX: number = evaluateX(scope);
+						const transformedY: number = evaluateY(scope);
 						transformedWidth = Math.max(transformedX, transformedWidth);
 						transformedHeight = Math.max(transformedY, transformedHeight);
 						transformedCoordinates[y].push([transformedX, transformedY]);
