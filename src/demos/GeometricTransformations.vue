@@ -60,13 +60,8 @@
 			await drawImage();
 		} else {
 			// get image data
-			const offscreenCanvas = new OffscreenCanvas(image.width, image.height);
-			offscreenCanvas.width = image.width;
-			offscreenCanvas.height = image.height;
-			const offscreenContext = offscreenCanvas.getContext("2d");
-			if (!offscreenContext) return;
-			offscreenContext.drawImage(image, 0, 0);
-			const imageData = offscreenContext.getImageData(0, 0, image.width, image.height);
+			await drawImage();
+			const imageData = context.getImageData(0, 0, image.width, image.height);
 
 			// calculate transformed coordinates
 			const transformedCoordinates: [x: number, y: number][][] = [];
