@@ -78,23 +78,17 @@
 			const imageData = context.getImageData(0, 0, image.width, image.height);
 
 			// transform colors
-			try {
-				for (let y = 0; y < image.height; y++) {
-					for (let x = 0; x < image.width; x++) {
-						const index = (y * image.width + x) * 4;
-						imageData.data[index + 0] = lookupTable.value[imageData.data[index + 0]];
-						imageData.data[index + 1] = lookupTable.value[imageData.data[index + 1]];
-						imageData.data[index + 2] = lookupTable.value[imageData.data[index + 2]];
-					}
+			for (let y = 0; y < image.height; y++) {
+				for (let x = 0; x < image.width; x++) {
+					const index = (y * image.width + x) * 4;
+					imageData.data[index + 0] = lookupTable.value[imageData.data[index + 0]];
+					imageData.data[index + 1] = lookupTable.value[imageData.data[index + 1]];
+					imageData.data[index + 2] = lookupTable.value[imageData.data[index + 2]];
 				}
-
-				// draw
-				context.putImageData(imageData, 0, 0);
-
-			} catch {
-				context.fillStyle = "grey";
-				context.fillRect(0, 0, canvas.value.width, canvas.value.width);
 			}
+
+			// draw
+			context.putImageData(imageData, 0, 0);
 		}
 
 		async function drawImage(): Promise<void> {
