@@ -15,9 +15,10 @@
 			</v-col>
 
 			<v-col cols="auto" class="d-flex justify-center">
-				<v-switch v-model="applyTransformation" color="primary" label="Apply Transformation" />
+				<v-switch v-model="applyTransformation" color="primary" label="Apply Forward Transformation" />
 			</v-col>
 		</v-row>
+
 		<canvas class="mx-auto d-block mt-5" ref="canvas"
 			style="object-fit: scale-down; min-height: 50vh; max-width: 90%;"></canvas>
 	</v-container>
