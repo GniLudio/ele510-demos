@@ -29,11 +29,11 @@
 	const equation = ref("I > 128 ? 0 : 255");
 	const graph = computed(() => {
 		return Array.from({ length: 255 }, (_, i) => {
-			if (!evaluate.value) return undefined;
+			if (!evaluate.value) return -100;
 			try {
 				return Math.max(0, Math.min(255, evaluate.value({ I: i })));
 			} catch {
-				return undefined;
+				return -100;
 			}
 		})
 	});
