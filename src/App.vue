@@ -19,7 +19,8 @@
 					</v-tabs-window-item>
 				</v-tabs-window>
 			</v-container>
-
+			<v-footer class="position-absolute bottom-0 right-0"><a
+					href="https://github.com/GniLudio/ele510-demos/">GitHub</a></v-footer>
 		</v-main>
 	</v-app>
 </template>
