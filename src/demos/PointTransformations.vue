@@ -8,6 +8,9 @@
 					</template>
 				</v-tooltip>
 			</v-col>
+			<v-col cols="1" class="ma-0 pa-0 ga-0">
+				<v-sparkline v-model="graph" height="100" padding="0" :min="0 - 4" :max="255 + 4" class="border" />
+			</v-col>
 			<v-col cols="auto" class="d-flex justify-center">
 				<v-switch v-model="applyTransformation" color="primary" label="Apply Transformation" />
 			</v-col>
@@ -23,7 +26,17 @@
 
 	const canvas = ref<HTMLCanvasElement | null>();
 	const applyTransformation = ref(false);
-	const equation = ref("(I < 64) ? 0 : (255 - I)");
+	const equation = ref("I > 128 ? 0 : 255");
+	const graph = computed(() => {
+		return Array.from({ length: 255 }, (_, i) => {
+			if (!evaluate.value) return undefined;
+			try {
+				return Math.max(0, Math.min(255, evaluate.value({ I: i })));
+			} catch {
+				return undefined;
+			}
+		})
+	});
 
 	const evaluate = computed(() => {
 		try {
