@@ -27,15 +27,24 @@
 	const canvas = ref<HTMLCanvasElement | null>();
 	const applyTransformation = ref(false);
 	const equation = ref("I > 128 ? 0 : 255");
-	const graph = computed(() => {
-		return Array.from({ length: 255 }, (_, i) => {
-			if (!evaluate.value) return -100;
-			try {
-				return Math.max(0, Math.min(255, evaluate.value({ I: i })));
-			} catch {
-				return -100;
+	const lookupTable = computed(() => {
+		const t: Record<number, number> = {};
+		for (let i = 0; i <= 255; i++) {
+			if (!evaluate.value) {
+				t[i] = 0;
 			}
-		})
+			else {
+				try {
+					t[i] = Math.max(0, Math.min(255, evaluate.value({ I: i })));
+				} catch {
+					t[i] = 0;
+				}
+			}
+		}
+		return t;
+	});
+	const graph = computed(() => {
+		return Array.from({ length: 255 }, (_, i) => lookupTable.value[i])
 	});
 
 	const evaluate = computed(() => {
@@ -46,7 +55,7 @@
 		}
 	});
 
-	watch([applyTransformation, evaluate], updateImage, { flush: 'post' });
+	watch([applyTransformation, lookupTable], updateImage, { flush: 'post' });
 
 	onMounted(() => updateImage());
 
@@ -63,9 +72,6 @@
 
 		if (!applyTransformation.value) {
 			await drawImage();
-		} else if (evaluate.value == undefined) {
-			context.fillStyle = "grey";
-			context.fillRect(0, 0, canvas.value.width, canvas.value.width);
 		} else {
 			// get image data
 			await drawImage();
@@ -76,9 +82,9 @@
 				for (let y = 0; y < image.height; y++) {
 					for (let x = 0; x < image.width; x++) {
 						const index = (y * image.width + x) * 4;
-						imageData.data[index + 0] = evaluate.value({ I: imageData.data[index + 0] });
-						imageData.data[index + 1] = evaluate.value({ I: imageData.data[index + 1] });
-						imageData.data[index + 2] = evaluate.value({ I: imageData.data[index + 2] });
+						imageData.data[index + 0] = lookupTable.value[imageData.data[index + 0]];
+						imageData.data[index + 1] = lookupTable.value[imageData.data[index + 1]];
+						imageData.data[index + 2] = lookupTable.value[imageData.data[index + 2]];
 					}
 				}
 
